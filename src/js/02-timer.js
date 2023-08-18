@@ -36,6 +36,7 @@ const options = {
 flatpickr(document.getElementById('datetime-picker'), options);
 
 // Hand Made
+
 let setDate = function () {
   intervalID = setInterval(() => {
     date = new Date();
