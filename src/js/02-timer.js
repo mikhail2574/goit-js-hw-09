@@ -36,28 +36,41 @@ const options = {
 flatpickr(document.getElementById('datetime-picker'), options);
 
 // Hand Made
+function check() {
+  date = new Date();
+  if (selectedDate <= date.getTime()) {
+    Notiflix.Notify.failure('Please choose a date in the future');
+    btn.setAttribute('disabled', '');
+    return false;
+  } else {
+    setTimeout(() => btn.removeAttribute('disabled'), 100);
+    return true;
+  }
+}
 
 let setDate = function () {
-  intervalID = setInterval(() => {
-    date = new Date();
-    let rest = selectedDate - date.getTime();
-    let daysQuantity = Math.floor(rest / 1000 / 60 / 60 / 24);
-    daysOut.innerHTML = String(daysQuantity).padStart(2, '0');
-    rest -= daysQuantity * 1000 * 60 * 60 * 24;
-    let hoursQuantity = Math.floor(rest / 1000 / 60 / 60);
-    hoursOut.innerHTML = String(hoursQuantity).padStart(2, '0');
-    rest -= hoursQuantity * 1000 * 60 * 60;
-    let minutesQuantity = Math.floor(rest / 1000 / 60);
-    rest -= minutesQuantity * 1000 * 60;
-    minutesOut.innerHTML = String(minutesQuantity).padStart(2, '0');
-    let secondsQuantity = Math.floor(rest / 1000);
-    rest -= secondsQuantity * 1000;
-    secondsOut.innerHTML = String(secondsQuantity).padStart(2, '0');
-    if (selectedDate - date.getTime() < 1000) {
-      clearInterval(intervalID);
-      Notiflix.Notify.success('You got it!');
-    }
-  }, 1000);
+  if (check()) {
+    intervalID = setInterval(() => {
+      date = new Date();
+      let rest = selectedDate - date.getTime();
+      let daysQuantity = Math.floor(rest / 1000 / 60 / 60 / 24);
+      daysOut.innerHTML = String(daysQuantity).padStart(2, '0');
+      rest -= daysQuantity * 1000 * 60 * 60 * 24;
+      let hoursQuantity = Math.floor(rest / 1000 / 60 / 60);
+      hoursOut.innerHTML = String(hoursQuantity).padStart(2, '0');
+      rest -= hoursQuantity * 1000 * 60 * 60;
+      let minutesQuantity = Math.floor(rest / 1000 / 60);
+      rest -= minutesQuantity * 1000 * 60;
+      minutesOut.innerHTML = String(minutesQuantity).padStart(2, '0');
+      let secondsQuantity = Math.floor(rest / 1000);
+      rest -= secondsQuantity * 1000;
+      secondsOut.innerHTML = String(secondsQuantity).padStart(2, '0');
+      if (selectedDate - date.getTime() < 1000) {
+        clearInterval(intervalID);
+        Notiflix.Notify.success('You got it!');
+      }
+    }, 1000);
+  }
 };
 
 btn.addEventListener('click', setDate);
